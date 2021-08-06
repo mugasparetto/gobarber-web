@@ -47,6 +47,7 @@ GoBarber is an application where customers can book appointments with barbers an
 - [ReactJS](https://reactjs.org/)
 - [TypeScript](https://www.typescriptlang.org/)
 - [Styled-components](https://styled-components.com/)
+- [React-router](https://reactrouter.com/)
 
 ## :rocket: Getting started
 
