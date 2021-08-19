@@ -249,6 +249,11 @@ export const CalendarContainer = styled.aside`
 export const Calendar = styled.div`
   width: 23.75rem;
 
+  p {
+    margin-top: 1rem;
+    margin-bottom: 2rem;
+  }
+
   @media all and (max-width: 55.625em) {
     margin: 0 auto;
   }
@@ -344,7 +349,9 @@ export const Calendar = styled.div`
 `;
 
 export const Section = styled.section`
-  margin-top: 2rem;
+  & + section {
+    margin-top: 2rem;
+  }
 
   > strong {
     color: #999591;

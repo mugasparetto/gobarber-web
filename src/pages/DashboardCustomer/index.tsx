@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { Link, useHistory } from 'react-router-dom';
-import { format } from 'date-fns';
+import { format, addHours, subHours } from 'date-fns';
 import { FiPower } from 'react-icons/fi';
 import DayPicker, { DayModifiers } from 'react-day-picker';
 import 'react-day-picker/lib/style.css';
@@ -44,11 +44,18 @@ interface BarberData {
 }
 
 const DashboardCustomer: React.FC = () => {
-  const [selectedDate, setSelectedDate] = useState(new Date());
+  const brazilianTime = useMemo(() => {
+    let date = subHours(new Date(), 3);
+    date = addHours(date, new Date().getTimezoneOffset() / 60);
+
+    return date;
+  }, []);
+
+  const [selectedDate, setSelectedDate] = useState(brazilianTime);
   const [selectedHour, setSelectedHour] = useState<number | undefined>(
     undefined
   );
-  const [currentMonth, setCurrentMonth] = useState(new Date());
+  const [currentMonth, setCurrentMonth] = useState(brazilianTime);
   const [monthAvailability, setMonthAvailability] = useState<
     MonthAvailabilityItem[]
   >([]);
@@ -95,9 +102,12 @@ const DashboardCustomer: React.FC = () => {
       date.setHours(selectedHour!);
       date.setMinutes(0);
 
+      let apiDate = addHours(date, 3);
+      apiDate = subHours(apiDate, new Date().getTimezoneOffset() / 60);
+
       await api.post('appointments', {
         provider_id: selectedBarber?.id,
-        date,
+        date: apiDate,
       });
 
       history.push({
@@ -246,15 +256,16 @@ const DashboardCustomer: React.FC = () => {
             <DayPicker
               disabledDays={[
                 { daysOfWeek: [0, 6] },
-                { before: new Date() },
+                { before: brazilianTime },
                 ...disabledDays,
               ]}
-              fromMonth={new Date()}
+              fromMonth={brazilianTime}
               selectedDays={selectedDate}
               onDayClick={handleDateChange}
               onMonthChange={handleMonthChange}
               className={selectedBarber ? '' : 'hidden'}
             />
+            <p>Hours below are related to GMT-3</p>
           </Calendar>
           {selectedBarber && (
             <>

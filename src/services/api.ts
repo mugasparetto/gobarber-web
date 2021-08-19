@@ -7,10 +7,12 @@ const api = axios.create({
 api.interceptors.response.use(
   (response) => response,
   (error) => {
-    if (error.response.status === 401 && error.config.url !== 'sessions') {
-      localStorage.removeItem('@GoBarber:token');
-      localStorage.removeItem('@GoBarber:user');
-      window.location.reload();
+    if (error.response) {
+      if (error.response.status === 401 && error.config.url !== 'sessions') {
+        localStorage.removeItem('@GoBarber:token');
+        localStorage.removeItem('@GoBarber:user');
+        window.location.reload();
+      }
     }
 
     return Promise.reject(error);

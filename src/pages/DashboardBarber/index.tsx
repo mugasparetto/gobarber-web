@@ -1,6 +1,14 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { isToday, format, parseISO, isAfter, isWeekend } from 'date-fns';
+import {
+  isToday,
+  format,
+  parseISO,
+  isAfter,
+  isWeekend,
+  addHours,
+  subHours,
+} from 'date-fns';
 import { FiClock, FiPower } from 'react-icons/fi';
 import DayPicker, { DayModifiers } from 'react-day-picker';
 import 'react-day-picker/lib/style.css';
@@ -37,9 +45,16 @@ interface AppointmentData {
 }
 
 const DashboardBarber: React.FC = () => {
-  const [selectedDate, setSelectedDate] = useState(new Date());
+  const brazilianTime = useMemo(() => {
+    let date = subHours(new Date(), 3);
+    date = addHours(date, new Date().getTimezoneOffset() / 60);
+
+    return date;
+  }, []);
+
+  const [selectedDate, setSelectedDate] = useState(brazilianTime);
   const [appointments, setAppointments] = useState<AppointmentData[]>([]);
-  const [currentMonth, setCurrentMonth] = useState(new Date());
+  const [currentMonth, setCurrentMonth] = useState(brazilianTime);
   const [monthAvailability, setMonthAvailability] = useState<
     MonthAvailabilityItem[]
   >([]);
@@ -80,9 +95,15 @@ const DashboardBarber: React.FC = () => {
       })
       .then((response) => {
         const formattedAppointments = response.data.map((appointment) => {
+          const apiDate = addHours(
+            parseISO(appointment.date),
+            new Date().getTimezoneOffset() / 60
+          );
+
           return {
             ...appointment,
-            formattedHour: format(parseISO(appointment.date), 'HH:mm'),
+            date: apiDate.toISOString(),
+            formattedHour: format(apiDate, 'HH:mm'),
           };
         });
 
@@ -112,9 +133,9 @@ const DashboardBarber: React.FC = () => {
 
   const nextAppointment = useMemo(() => {
     return appointments.find((appointment) => {
-      return isAfter(parseISO(appointment.date), new Date());
+      return isAfter(parseISO(appointment.date), brazilianTime);
     });
-  }, [appointments]);
+  }, [appointments, brazilianTime]);
 
   const fullDays = useMemo(() => {
     const dates = monthAvailability
@@ -127,7 +148,7 @@ const DashboardBarber: React.FC = () => {
         return (
           monthDay.available === false &&
           !isWeekend(date) &&
-          isAfter(date, new Date())
+          isAfter(date, brazilianTime)
         );
       })
       .map((monthDay) => {
@@ -138,7 +159,7 @@ const DashboardBarber: React.FC = () => {
       });
 
     return dates;
-  }, [currentMonth, monthAvailability]);
+  }, [currentMonth, monthAvailability, brazilianTime]);
 
   return (
     <Container>
@@ -173,6 +194,7 @@ const DashboardBarber: React.FC = () => {
             <span>{selectedDateAsText}</span>
             <span>{selectedWeekDay}</span>
           </p>
+          <p>Hours below are related to GMT-3</p>
 
           {isToday(selectedDate) && nextAppointment && (
             <NextAppointment>
@@ -237,7 +259,7 @@ const DashboardBarber: React.FC = () => {
             disabledDays={[{ daysOfWeek: [0, 6] }]}
             modifiers={{
               available: { daysOfWeek: [1, 2, 3, 4, 5] },
-              past: { before: new Date() },
+              past: { before: brazilianTime },
               highlighted: [...fullDays],
             }}
             selectedDays={selectedDate}
