@@ -349,9 +349,7 @@ export const Calendar = styled.div`
 `;
 
 export const Section = styled.section`
-  & + section {
-    margin-top: 2rem;
-  }
+  margin-top: 2rem;
 
   > strong {
     color: #999591;
@@ -372,7 +370,7 @@ export const Section = styled.section`
 export const HourContainer = styled.div`
   display: flex;
   flex-wrap: wrap;
-  gap: 0.5rem;
+  margin-top: -0.5rem;
 `;
 
 export const Hour = styled.button<HourProps>`
@@ -380,6 +378,9 @@ export const Hour = styled.button<HourProps>`
   padding: 0.75rem;
   background: ${(props) => (props.selected ? '#ff9000' : '#3e3b47')};
   border-radius: 0.625rem;
+  margin-top: 0.5rem;
+
+  margin-right: 0.5rem;
 
   opacity: ${(props) => (props.available ? 1 : 0.3)};
   cursor: ${(props) => (props.available ? 'pointer' : 'auto')};
