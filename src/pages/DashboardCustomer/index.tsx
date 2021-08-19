@@ -265,10 +265,10 @@ const DashboardCustomer: React.FC = () => {
               onMonthChange={handleMonthChange}
               className={selectedBarber ? '' : 'hidden'}
             />
-            <p>Hours below are related to GMT-3</p>
           </Calendar>
           {selectedBarber && (
             <>
+              <p>Hours below are related to GMT-3</p>
               <Section>
                 <strong>Morning</strong>
                 <HourContainer>

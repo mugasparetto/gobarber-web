@@ -194,7 +194,6 @@ const DashboardBarber: React.FC = () => {
             <span>{selectedDateAsText}</span>
             <span>{selectedWeekDay}</span>
           </p>
-          <p>Hours below are related to GMT-3</p>
 
           {isToday(selectedDate) && nextAppointment && (
             <NextAppointment>
@@ -213,6 +212,9 @@ const DashboardBarber: React.FC = () => {
           )}
 
           <Section>
+            {appointments.length !== 0 && (
+              <p style={{ color: 'white' }}>Hours below are related to GMT-3</p>
+            )}
             <strong>Morning</strong>
 
             {morningAppointments.length === 0 && <p>No bookings</p>}

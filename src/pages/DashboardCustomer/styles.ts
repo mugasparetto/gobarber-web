@@ -239,6 +239,11 @@ export const CalendarContainer = styled.aside`
     }
   }
 
+  p {
+    margin-top: 1rem;
+    margin-bottom: 2rem;
+  }
+
   h4 {
     text-align: center;
     margin-top: 5rem;
@@ -248,11 +253,6 @@ export const CalendarContainer = styled.aside`
 
 export const Calendar = styled.div`
   width: 23.75rem;
-
-  p {
-    margin-top: 1rem;
-    margin-bottom: 2rem;
-  }
 
   @media all and (max-width: 55.625em) {
     margin: 0 auto;
