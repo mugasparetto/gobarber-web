@@ -75,7 +75,12 @@ const ForgotPassword: React.FC = () => {
           <Form onSubmit={handleSubmit} ref={formRef}>
             <h1>Forgot password</h1>
 
-            <Input name="email" icon={FiMail} placeholder="Email" />
+            <Input
+              name="email"
+              icon={FiMail}
+              placeholder="Email"
+              type="email"
+            />
 
             <Button loading={loading}>Send email</Button>
           </Form>

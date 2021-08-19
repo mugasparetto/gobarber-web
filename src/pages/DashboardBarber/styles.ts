@@ -199,10 +199,6 @@ export const NextAppointment = styled.div`
 export const Section = styled.section`
   margin-top: 3rem;
 
-  p {
-    margin-bottom: 1rem;
-  }
-
   > strong {
     color: #999591;
     font-size: 1.25rem;

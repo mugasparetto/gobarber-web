@@ -150,7 +150,7 @@ const Profile: React.FC = () => {
           <h1>Profile</h1>
 
           <Input name="name" icon={FiUser} placeholder="Name" />
-          <Input name="email" icon={FiMail} placeholder="Email" />
+          <Input name="email" icon={FiMail} placeholder="Email" type="email" />
 
           <Input
             containerStyle={{ marginTop: 24 }}

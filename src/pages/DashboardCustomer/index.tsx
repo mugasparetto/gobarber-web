@@ -250,7 +250,12 @@ const DashboardCustomer: React.FC = () => {
         </BarbersContainer>
 
         <CalendarContainer>
-          {selectedBarber && <h1>Select a date & time</h1>}
+          {selectedBarber && (
+            <>
+              <h1>Select a date & time</h1>
+              <p>Time below is related to GMT-3</p>
+            </>
+          )}
           <Calendar>
             {!selectedBarber && <h4>No barber selected</h4>}
             <DayPicker
@@ -268,7 +273,6 @@ const DashboardCustomer: React.FC = () => {
           </Calendar>
           {selectedBarber && (
             <>
-              <p>Hours below are related to GMT-3</p>
               <Section>
                 <strong>Morning</strong>
                 <HourContainer>

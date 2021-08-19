@@ -1,13 +1,14 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { Link } from 'react-router-dom';
 import {
-  isToday,
   format,
   parseISO,
   isAfter,
   isWeekend,
   addHours,
   subHours,
+  isEqual,
+  startOfDay,
 } from 'date-fns';
 import { FiClock, FiPower } from 'react-icons/fi';
 import DayPicker, { DayModifiers } from 'react-day-picker';
@@ -189,32 +190,33 @@ const DashboardBarber: React.FC = () => {
       <Content>
         <Schedule>
           <h1>Bookings</h1>
+          <p style={{ color: 'white' }}>Time below is related to GMT-3</p>
           <p>
-            {isToday(selectedDate) && <span>Today</span>}
+            {isEqual(startOfDay(selectedDate), startOfDay(brazilianTime)) && (
+              <span>Today</span>
+            )}
             <span>{selectedDateAsText}</span>
             <span>{selectedWeekDay}</span>
           </p>
 
-          {isToday(selectedDate) && nextAppointment && (
-            <NextAppointment>
-              <strong>Next booking</strong>
-              <div>
-                <img
-                  src={nextAppointment.user.avatar_url}
-                  alt={nextAppointment.user.name}
-                />
-                <strong>{nextAppointment.user.name}</strong>
-                <span>
-                  <FiClock /> {nextAppointment.formattedHour}
-                </span>
-              </div>
-            </NextAppointment>
-          )}
+          {isEqual(startOfDay(selectedDate), startOfDay(brazilianTime)) &&
+            nextAppointment && (
+              <NextAppointment>
+                <strong>Next booking</strong>
+                <div>
+                  <img
+                    src={nextAppointment.user.avatar_url}
+                    alt={nextAppointment.user.name}
+                  />
+                  <strong>{nextAppointment.user.name}</strong>
+                  <span>
+                    <FiClock /> {nextAppointment.formattedHour}
+                  </span>
+                </div>
+              </NextAppointment>
+            )}
 
           <Section>
-            {appointments.length !== 0 && (
-              <p style={{ color: 'white' }}>Hours below are related to GMT-3</p>
-            )}
             <strong>Morning</strong>
 
             {morningAppointments.length === 0 && <p>No bookings</p>}
